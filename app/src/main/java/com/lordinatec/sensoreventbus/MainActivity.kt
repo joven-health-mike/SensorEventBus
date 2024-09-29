@@ -30,7 +30,7 @@ class MainActivity : ComponentActivity() {
                     Modifier.padding(innerPadding)
                     LaunchedEffect(Unit) {
                         lifecycleScope.launch {
-                            eventBus.subscribe(eventListener).listen()
+                            eventBus.subscribe(analyticsListener).subscribe(loggerListener).listen()
                         }
                     }
                 }
@@ -38,7 +38,21 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private val eventListener = EventListener { event ->
+    private val analyticsListener = EventListener { event ->
+        when (event) {
+            SensorEvent.AirplaneModeOnEvent -> {
+                // send analytics event for Airplane Mode On
+                println("ANALYTICS: Airplane Mode On Event")
+            }
+
+            SensorEvent.AirplaneModeOffEvent -> {
+                // send analytics event for Airplane Mode Off
+                println("ANALYTICS: Airplane Mode Off Event")
+            }
+        }
+    }
+
+    private val loggerListener = EventListener { event ->
         when (event) {
             SensorEvent.AirplaneModeOnEvent -> {
                 println("Airplane Mode On Event")
