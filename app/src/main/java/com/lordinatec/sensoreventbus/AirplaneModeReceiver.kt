@@ -7,6 +7,14 @@ import android.provider.Settings
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
+/**
+ * AirplaneModeReceiver is a BroadcastReceiver that listens for airplane mode changes.
+ *
+ * @param eventBus the SensorEventBus to publish events to
+ * @param scope the CoroutineScope to launch coroutines in
+ *
+ * @constructor creates an AirplaneModeReceiver
+ */
 class AirplaneModeReceiver(
     private val eventBus: SensorEventBus,
     private val scope: CoroutineScope,
