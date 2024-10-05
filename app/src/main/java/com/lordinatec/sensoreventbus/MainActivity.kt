@@ -1,7 +1,5 @@
 package com.lordinatec.sensoreventbus
 
-import android.content.Intent
-import android.content.IntentFilter
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -16,13 +14,8 @@ import com.lordinatec.sensoreventbus.ui.theme.SensorEventBusTheme
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
-    private val eventBus = SensorEventFlow()
-    private val airplaneModeReceiver =
-        AirplaneModeReceiver(scope = lifecycleScope, eventBus = eventBus)
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        registerReceiver(airplaneModeReceiver, IntentFilter(Intent.ACTION_AIRPLANE_MODE_CHANGED))
         enableEdgeToEdge()
         setContent {
             SensorEventBusTheme {
@@ -30,42 +23,27 @@ class MainActivity : ComponentActivity() {
                     Modifier.padding(innerPadding)
                     LaunchedEffect(Unit) {
                         lifecycleScope.launch {
-                            eventBus.subscribe(analyticsListener).subscribe(loggerListener).listen()
+                            EventManager.enableAirplaneModeTracking(applicationContext)
+                            EventManager.enableTrafficStatsPolling()
+                            SensorEventManager.sensorEventFlow.collect { event ->
+                                when (event) {
+                                    is AirplaneModeEvent -> {
+                                        println("Airplane mode is ${if (event.isEnabled) "enabled" else "disabled"} at ${event.timestamp}")
+                                    }
+
+                                    is TrafficStatsEvent -> {
+                                        println("Received: ${event.receivedBytes} bytes, Sent: ${event.sentBytes} bytes at ${event.timestamp}")
+                                    }
+
+                                    else -> {
+                                        println("Unknown event: ${event.eventName}")
+                                    }
+                                }
+                            }
                         }
                     }
                 }
             }
         }
-    }
-
-    private val analyticsListener = EventListener { event ->
-        when (event) {
-            SensorEvent.AirplaneModeOnEvent -> {
-                // send analytics event for Airplane Mode On
-                println("ANALYTICS: Airplane Mode On Event")
-            }
-
-            SensorEvent.AirplaneModeOffEvent -> {
-                // send analytics event for Airplane Mode Off
-                println("ANALYTICS: Airplane Mode Off Event")
-            }
-        }
-    }
-
-    private val loggerListener = EventListener { event ->
-        when (event) {
-            SensorEvent.AirplaneModeOnEvent -> {
-                println("Airplane Mode On Event")
-            }
-
-            SensorEvent.AirplaneModeOffEvent -> {
-                println("Airplane Mode Off Event")
-            }
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        unregisterReceiver(airplaneModeReceiver)
     }
 }
