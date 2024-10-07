@@ -7,19 +7,19 @@ import android.os.Handler
 import android.os.Looper
 import com.lordinatec.sensoreventbus.sensor.AirplaneModeReceiver
 import com.lordinatec.sensoreventbus.sensor.TrafficStatsReceiver
-import com.lordinatec.sensoreventbus.sensor.broadcast.TrafficStatsBroadcast
+import com.lordinatec.sensoreventbus.sensor.broadcast.TrafficStatsPollable
 
 object SensorEventManager {
     private var airplaneModeReceiver: AirplaneModeReceiver? = null
     private var trafficStatsReceiver: TrafficStatsReceiver? = null
-    private val trafficStatsBroadcast = TrafficStatsBroadcast()
+    private val trafficStatsPollable = TrafficStatsPollable()
     private var isPollingTrafficStats = false
     private val trafficStatsHandler = Handler(Looper.getMainLooper())
     private var trafficStatsRunnable: Runnable? = null
 
     class TrafficStatsRunnable(private val context: Context) : Runnable {
         override fun run() {
-            trafficStatsBroadcast.poll(context)
+            trafficStatsPollable.poll(context)
             // Schedule the next poll
             trafficStatsHandler.postDelayed(this, POLLING_INTERVAL)
         }
@@ -43,7 +43,7 @@ object SensorEventManager {
     fun enableTrafficStatsTracking(context: Context) {
         if (trafficStatsReceiver == null) {
             trafficStatsReceiver = TrafficStatsReceiver(SensorEventBus, SensorEventFactory)
-            val filter = IntentFilter(TrafficStatsBroadcast.ACTION)
+            val filter = IntentFilter(TrafficStatsPollable.ACTION)
             context.registerReceiver(trafficStatsReceiver, filter, Context.RECEIVER_EXPORTED)
         }
     }

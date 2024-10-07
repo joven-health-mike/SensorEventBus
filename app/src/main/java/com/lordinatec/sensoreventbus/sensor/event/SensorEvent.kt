@@ -1,6 +1,12 @@
 package com.lordinatec.sensoreventbus.sensor.event
 
 interface SensorEvent {
-    val eventName: String
-    val timestamp: Long
+    data class AirplaneModeEvent(
+        val isEnabled: Boolean
+    ) : SensorEvent
+
+    data class TrafficStatsEvent(
+        val receivedBytes: Long,
+        val sentBytes: Long
+    ) : SensorEvent
 }

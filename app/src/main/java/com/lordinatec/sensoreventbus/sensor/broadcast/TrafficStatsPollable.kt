@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.TrafficStats
 
-class TrafficStatsBroadcast : Pollable {
+class TrafficStatsPollable : Pollable {
     override fun poll(context: Context) {
         val receivedBytes = TrafficStats.getTotalRxBytes()
         val sentBytes = TrafficStats.getTotalTxBytes()

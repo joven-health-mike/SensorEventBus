@@ -1,14 +1,12 @@
 package com.lordinatec.sensoreventbus.analytics
 
-object AnalyticsManager {
-    fun onAirplaneModeChanged(isOn: Boolean) {
-        val event = if (isOn) "AirplaneModeOn" else "AirplaneModeOff"
-        val analyticsEvent = AnalyticsEvent(event, System.currentTimeMillis())
-        AnalyticsRepository.sendEvent(analyticsEvent)
-    }
+import com.lordinatec.sensoreventbus.sensor.event.SensorEventBus
 
-    fun onTrafficStatsUpdated(receivedBytes: Long, sentBytes: Long) {
-        val event = AnalyticsEvent("TrafficStats", System.currentTimeMillis(), receivedBytes, sentBytes)
-        AnalyticsRepository.sendEvent(event)
+object AnalyticsManager {
+    suspend fun listenForEvents(bus: SensorEventBus, factory: AnalyticsEventFactory) {
+        bus.sensorEventFlow.collect{ event ->
+            val analyticsEvent = factory.create(event)
+            AnalyticsRepository.sendEvent(analyticsEvent)
+        }
     }
 }
