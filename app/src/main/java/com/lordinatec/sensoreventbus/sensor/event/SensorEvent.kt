@@ -1,4 +1,4 @@
-package com.lordinatec.sensoreventbus
+package com.lordinatec.sensoreventbus.sensor.event
 
 interface SensorEvent {
     val eventName: String

@@ -1,7 +1,4 @@
-package com.lordinatec.sensoreventbus
-
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+package com.lordinatec.sensoreventbus.sensor.event
 
 data class AirplaneModeEvent(
     override val eventName: String = "AirplaneMode",

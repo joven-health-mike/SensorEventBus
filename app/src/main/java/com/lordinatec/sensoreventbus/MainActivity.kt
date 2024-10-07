@@ -10,6 +10,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
+import com.lordinatec.sensoreventbus.sensor.event.AirplaneModeEvent
+import com.lordinatec.sensoreventbus.sensor.event.SensorEventManager
+import com.lordinatec.sensoreventbus.sensor.event.SensorEventBus
+import com.lordinatec.sensoreventbus.sensor.event.TrafficStatsEvent
 import com.lordinatec.sensoreventbus.ui.theme.SensorEventBusTheme
 import kotlinx.coroutines.launch
 
@@ -23,9 +27,15 @@ class MainActivity : ComponentActivity() {
                     Modifier.padding(innerPadding)
                     LaunchedEffect(Unit) {
                         lifecycleScope.launch {
-                            EventManager.enableAirplaneModeTracking(applicationContext)
-                            EventManager.enableTrafficStatsPolling()
-                            SensorEventManager.sensorEventFlow.collect { event ->
+                            // start polling
+                            SensorEventManager.enableTrafficStatsPolling(applicationContext)
+
+                            // start tracking
+                            SensorEventManager.enableAirplaneModeTracking(applicationContext)
+                            SensorEventManager.enableTrafficStatsTracking(applicationContext)
+
+                            // collect events
+                            SensorEventBus.sensorEventFlow.collect { event ->
                                 when (event) {
                                     is AirplaneModeEvent -> {
                                         println("Airplane mode is ${if (event.isEnabled) "enabled" else "disabled"} at ${event.timestamp}")

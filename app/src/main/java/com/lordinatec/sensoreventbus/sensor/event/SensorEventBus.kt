@@ -1,12 +1,12 @@
-package com.lordinatec.sensoreventbus
+package com.lordinatec.sensoreventbus.sensor.event
 
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 
-object SensorEventManager {
+object SensorEventBus {
     // SharedFlow that emits SensorEvents to subscribers
     private val _sensorEventFlow = MutableSharedFlow<SensorEvent>(replay = 0)
-    val sensorEventFlow: SharedFlow<SensorEvent> = _sensorEventFlow
+    val sensorEventFlow = _sensorEventFlow.asSharedFlow()
 
     // Function to publish events
     suspend fun publishEvent(event: SensorEvent) {

@@ -1,4 +1,4 @@
-package com.lordinatec.sensoreventbus
+package com.lordinatec.sensoreventbus.analytics
 
 object AnalyticsManager {
     fun onAirplaneModeChanged(isOn: Boolean) {

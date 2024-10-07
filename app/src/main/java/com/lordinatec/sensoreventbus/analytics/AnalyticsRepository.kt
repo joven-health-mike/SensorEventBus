@@ -1,4 +1,4 @@
-package com.lordinatec.sensoreventbus
+package com.lordinatec.sensoreventbus.analytics
 
 object AnalyticsRepository {
 //    private val apiService = ApiClient.createService(AnalyticsApiService::class.java)

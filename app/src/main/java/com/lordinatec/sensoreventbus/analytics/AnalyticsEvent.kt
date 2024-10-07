@@ -1,4 +1,4 @@
-package com.lordinatec.sensoreventbus
+package com.lordinatec.sensoreventbus.analytics
 
 class AnalyticsEvent(
     val eventName: String,
