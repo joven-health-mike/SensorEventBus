@@ -10,6 +10,7 @@ object AnalyticsEventFactory {
         when (event) {
             is SensorEvent.AirplaneModeEvent -> {
                 return AirplaneModeAnalyticsEvent(
+                    id = (0L..100L).random(),
                     eventName = "AirplaneModeEvent",
                     timestamp = System.currentTimeMillis(),
                     isEnabled = event.isEnabled
@@ -18,6 +19,7 @@ object AnalyticsEventFactory {
 
             is SensorEvent.TrafficStatsEvent -> {
                 return TrafficStatsAnalyticsEvent(
+                    id = (0L..100L).random(),
                     eventName = "TrafficStatsEvent",
                     timestamp = System.currentTimeMillis(),
                     receivedBytes = event.receivedBytes,

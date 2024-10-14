@@ -12,9 +12,12 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
 import com.lordinatec.sensoreventbus.analytics.AnalyticsEventFactory
 import com.lordinatec.sensoreventbus.analytics.AnalyticsManager
+import com.lordinatec.sensoreventbus.db.event.AnalyticsDbRepository
 import com.lordinatec.sensoreventbus.sensor.event.SensorEventBus
 import com.lordinatec.sensoreventbus.sensor.event.SensorEventManager
 import com.lordinatec.sensoreventbus.ui.theme.SensorEventBusTheme
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -36,6 +39,12 @@ class MainActivity : ComponentActivity() {
 
                             // listen for events
                             AnalyticsManager.listenForEvents(SensorEventBus, AnalyticsEventFactory)
+                        }
+                        lifecycleScope.launch {
+                            while (isActive) {
+                                println("db size: ${AnalyticsDbRepository.getEvents().size}")
+                                delay(10000L)
+                            }
                         }
                     }
                 }

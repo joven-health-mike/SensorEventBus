@@ -1,6 +1,7 @@
 package com.lordinatec.sensoreventbus.analytics.event
 
 class TrafficStatsAnalyticsEvent(
+    override val id: Long,
     override val eventName: String,
     override val timestamp: Long,
     private val receivedBytes: Long,

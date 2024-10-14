@@ -5,8 +5,8 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Handler
 import android.os.Looper
-import com.lordinatec.sensoreventbus.sensor.AirplaneModeReceiver
-import com.lordinatec.sensoreventbus.sensor.TrafficStatsReceiver
+import com.lordinatec.sensoreventbus.sensor.receiver.AirplaneModeReceiver
+import com.lordinatec.sensoreventbus.sensor.receiver.TrafficStatsReceiver
 import com.lordinatec.sensoreventbus.sensor.broadcast.TrafficStatsPollable
 
 object SensorEventManager {
