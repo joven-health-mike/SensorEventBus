@@ -6,7 +6,7 @@ interface AnalyticsEvent {
     val timestamp: Long
     fun toJson(): String
 
-    interface Listener {
+    fun interface Listener {
         fun onEvent(event: AnalyticsEvent)
     }
 }
